@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WIT FX — Tipos de Cambio</title>
+  <meta name="description" content="WitFx — ">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #050505;
+      --bg-secondary: #0C0C0C;
+      --bg-card: rgba(255, 255, 255, 0.035);
+      --bg-card-alt: rgba(255, 255, 255, 0.02);
+      --border-card: rgba(255, 255, 255, 0.07);
+      --border-card-glow: rgba(34, 197, 94, 0.2);
+      --green-primary: #22C55E;
+      --green-light: #4ADE80;
+      --green-dark: #166534;
+      --green-glow: rgba(34, 197, 94, 0.3);
+      --red-primary: #EF4444;
+      --red-light: #F87171;
+      --text-primary: #FFFFFF;
+      --text-secondary: rgba(255, 255, 255, 0.65);
+      --text-muted: rgba(255, 255, 255, 0.35);
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--bg-primary);
+    }
+
+    body {
+      width: 3840px;
+      height: 2160px;
+      overflow: hidden;
+      font-family: var(--font-family);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transform-origin: top left;
+    }
+
+    /* ===== ANIMATED BACKGROUND ===== */
+    .bg-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 3840px;
+      height: 2160px;
+      z-index: 0;
+      opacity: 0;
+      animation: bgFadeIn 2s ease-out forwards;
+    }
+
+    @keyframes bgFadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      animation: orbFloat 25s ease-in-out infinite alternate;
+    }
+
+    .bg-orb-1 {
+      width: 1200px;
+      height: 1000px;
+      top: -200px;
+      left: -200px;
+      background: rgba(34, 197, 94, 0.06);
+    }
+
+    .bg-orb-2 {
+      width: 900px;
+      height: 800px;
+      bottom: -100px;
+      right: 200px;
+      background: rgba(34, 197, 94, 0.04);
+      animation-delay: -8s;
+    }
+
+    .bg-orb-3 {
+      width: 700px;
+      height: 600px;
+      top: 40%;
+      left: 35%;
+      background: rgba(34, 197, 94, 0.025);
+      animation-delay: -15s;
+    }
+
+    @keyframes orbFloat {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      33% {
+        transform: translate(80px, -60px) scale(1.1);
+      }
+
+      66% {
+        transform: translate(-40px, 40px) scale(0.95);
+      }
+
+      100% {
+        transform: translate(60px, -30px) scale(1.05);
+      }
+    }
+
+    /* ===== FLOATING CURRENCY SYMBOLS ===== */
+    .floating-symbols {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 3840px;
+      height: 2160px;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .float-symbol {
+      position: absolute;
+      font-family: var(--font-family);
+      font-weight: 700;
+      color: rgba(34, 197, 94, 0.07);
+      user-select: none;
+      animation: symbolDrift linear infinite;
+    }
+
+    @keyframes symbolDrift {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+
+      8% {
+        opacity: 1;
+      }
+
+      92% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-2400px) rotate(25deg);
+        opacity: 0;
+      }
+    }
+
+    /* ===== FLOATING PARTICLES ===== */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 3840px;
+      height: 2160px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--green-primary);
+      opacity: 0;
+      animation: particleFloat linear infinite;
+    }
+
+    @keyframes particleFloat {
+      0% {
+        opacity: 0;
+        transform: translateY(0) scale(0);
+      }
+
+      10% {
+        opacity: 0.12;
+        transform: scale(1);
+      }
+
+      90% {
+        opacity: 0.12;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-2200px) scale(0.5);
+      }
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .main-container {
+      position: relative;
+      z-index: 1;
+      width: 3840px;
+      height: 2160px;
+      display: grid;
+      grid-template-columns: 56fr 44fr;
+    }
+
+    /* ===== LEFT PANEL — BRANDING ===== */
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 100px 80px 140px;
+      position: relative;
+    }
+
+    .logo-section {
+      margin-bottom: 50px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-wit,
+    .logo-fx {
+      font-size: 68px;
+      font-weight: 900;
+      letter-spacing: 8px;
+      line-height: 1;
+      padding: 14px 28px;
+      border: 3.5px solid var(--text-primary);
+      display: inline-block;
+    }
+
+    .logo-tagline {
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      margin-top: 24px;
+    }
+
+    /* ===== HEADLINE ===== */
+    .headline {
+      margin-bottom: 50px;
+    }
+
+    .headline h1 {
+      font-size: 88px;
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -3px;
+      margin-bottom: 32px;
+    }
+
+    .headline h1 .line1 {
+      display: block;
+      background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.75) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .headline h1 .accent {
+      display: block;
+      background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-light) 60%, #6EE7B7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .headline p {
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      max-width: 1300px;
+    }
+
+    /* ===== CHART SECTION ===== */
+    .chart-section {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+
+    .chart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .chart-pair-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .chart-pair-flag {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .chart-pair-flag img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .chart-pair-name {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 1px;
+    }
+
+    .chart-pair-label {
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .chart-pair-rate {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .chart-pair-rate.fading {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    .chart-pair-name {
+      transition: opacity 0.4s ease;
+    }
+
+    .chart-pair-name.fading {
+      opacity: 0;
+    }
+
+    .chart-container {
+      position: relative;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      overflow: hidden;
+      height: 1100px;
+    }
+
+    #historyChart {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: opacity 0.5s ease;
+    }
+
+    #historyChart.fading {
+      opacity: 0;
+    }
+
+    .chart-period-indicator {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+
+    /* Chart cycling dots */
+    .chart-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chart-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      transition: all 0.4s ease;
+    }
+
+    .chart-dot.active {
+      background: var(--green-primary);
+      box-shadow: 0 0 10px var(--green-glow);
+      width: 28px;
+      border-radius: 5px;
+    }
+
+    /* ===== CLOCK & DATE ===== */
+    .datetime-container {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .clock {
+      font-size: 84px;
+      font-weight: 200;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -2px;
+      color: var(--text-primary);
+    }
+
+    .clock-separator {
+      animation: blink 1s steps(1) infinite;
+      margin: 0 -4px;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.2;
+      }
+    }
+
+    .date-display {
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      border-left: 2px solid rgba(255, 255, 255, 0.1);
+      padding-left: 40px;
+    }
+
+    .date-display .day-name {
+      font-weight: 600;
+      color: var(--green-primary);
+      font-size: 24px;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+    }
+
+    /* ===== LIVE INDICATOR ===== */
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 20px;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 20px;
+    }
+
+    .live-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--green-primary);
+      box-shadow: 0 0 16px var(--green-glow), 0 0 32px var(--green-glow);
+      animation: livePulse 2s ease-in-out infinite;
+    }
+
+    .live-dot.error {
+      background: var(--red-primary);
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.3), 0 0 32px rgba(239, 68, 68, 0.2);
+      animation: livePulseError 1.5s ease-in-out infinite;
+    }
+
+    @keyframes livePulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.4);
+        opacity: 0.6;
+      }
+    }
+
+    @keyframes livePulseError {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+      }
+    }
+
+    /* ===== RIGHT PANEL — RATES ===== */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 100px 80px 60px;
+    }
+
+    .rates-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--border-card);
+    }
+
+    .rates-title {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .rates-subtitle {
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    /* ===== TABLE HEADER ===== */
+    .table-header {
+      display: grid;
+      grid-template-columns: 1.5fr 0.8fr 1fr;
+      padding: 16px 40px;
+      margin-bottom: 10px;
+    }
+
+    .table-header span {
+      font-size: 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      color: var(--text-muted);
+    }
+
+    .table-header span:nth-child(2) {
+      text-align: center;
+    }
+
+    .table-header span:nth-child(3) {
+      text-align: right;
+    }
+
+    /* ===== CURRENCY CARDS ===== */
+    .rates-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .rate-card {
+      display: grid;
+      grid-template-columns: 1.5fr 0.8fr 1fr;
+      align-items: center;
+      padding: 34px 40px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .rate-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .rate-card:nth-child(odd) {
+      background: var(--bg-card);
+    }
+
+    .rate-card:nth-child(even) {
+      background: var(--bg-card-alt);
+    }
+
+    .rate-card:nth-child(1)::before {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, transparent 40%);
+      opacity: 1;
+    }
+
+    /* Currency Info */
+    .currency-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .currency-flag {
+      width: 72px;
+      height: 72px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .currency-flag img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+    }
+
+    .currency-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .currency-code {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: var(--text-primary);
+    }
+
+    .currency-name {
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    .currency-pair {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    /* Rate Values */
+    .rate-value {
+      text-align: right;
+      position: relative;
+      z-index: 1;
+    }
+
+    .rate-change {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .rate-change-main {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .rate-percent {
+      font-size: 48px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.5px;
+      transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
+    }
+
+    .rate-percent.positive {
+      color: var(--green-primary);
+    }
+
+    .rate-percent.negative {
+      color: var(--red-primary);
+    }
+
+    .rate-percent.neutral {
+      color: var(--text-secondary);
+    }
+
+    .rate-change-label {
+      font-size: 18px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .rate-change-label.positive {
+      color: rgba(34, 197, 94, 0.5);
+    }
+
+    .rate-change-label.negative {
+      color: rgba(239, 68, 68, 0.5);
+    }
+
+    .rate-change-label.neutral {
+      color: var(--text-muted);
+    }
+
+    .rate-change-arrow {
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .rate-change-arrow.positive {
+      color: var(--green-primary);
+    }
+
+    .rate-change-arrow.negative {
+      color: var(--red-primary);
+    }
+
+    /* ===== SPARKLINE ===== */
+    .sparkline-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sparkline {
+      display: block;
+    }
+
+    /* ===== BIG MOVER BADGE ===== */
+    .big-mover-badge {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: rgba(255, 200, 0, 0.12);
+      border: 1px solid rgba(255, 200, 0, 0.25);
+      color: #FFC800;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 3px 12px;
+      border-radius: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: badgePulse 2.5s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    @keyframes badgePulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 8px rgba(255, 200, 0, 0.1);
+      }
+
+      50% {
+        opacity: 0.75;
+        box-shadow: 0 0 20px rgba(255, 200, 0, 0.25);
+      }
+    }
+
+    .rate-card.big-mover {
+      border-color: rgba(255, 200, 0, 0.15);
+    }
+
+    /* Rate flash animation */
+    @keyframes rateFlash {
+      0% {
+        border-color: var(--border-card);
+        box-shadow: none;
+      }
+
+      20% {
+        border-color: var(--border-card-glow);
+        box-shadow: 0 0 40px rgba(34, 197, 94, 0.06), inset 0 0 40px rgba(34, 197, 94, 0.02);
+      }
+
+      100% {
+        border-color: var(--border-card);
+        box-shadow: none;
+      }
+    }
+
+    .rate-card.flash {
+      animation: rateFlash 2s ease-out;
+    }
+
+    /* ===== DISCLAIMER ===== */
+    .disclaimer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-card);
+      font-size: 18px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .disclaimer-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ===== GRID LINE DECORATION ===== */
+    .grid-divider {
+      position: fixed;
+      top: 60px;
+      bottom: 60px;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.05) 15%, rgba(34, 197, 94, 0.12) 50%, rgba(255, 255, 255, 0.05) 85%, transparent 100%);
+      z-index: 1;
+    }
+
+    /* ===== LOADING STATE ===== */
+    .loading-skeleton .rate-percent {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.04) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s ease-in-out infinite;
+      border-radius: 8px;
+      color: transparent !important;
+      user-select: none;
+      min-width: 180px;
+      min-height: 46px;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .rate-percent.changing {
+      transform: translateY(-6px);
+      opacity: 0.4;
+    }
+
+    /* ===== INITIAL ENTRY ANIMATION ===== */
+    .left-panel>* {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .left-panel>*:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .left-panel>*:nth-child(2) {
+      animation-delay: 0.25s;
+    }
+
+    .left-panel>*:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    .left-panel>*:nth-child(4) {
+      animation-delay: 0.55s;
+    }
+
+    .left-panel>*:nth-child(5) {
+      animation-delay: 0.65s;
+    }
+
+    .rates-header {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease-out 0.2s forwards;
+    }
+
+    .table-header {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease-out 0.3s forwards;
+    }
+
+    .rate-card {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    .rate-card:nth-child(1) {
+      animation-delay: 0.35s;
+    }
+
+    .rate-card:nth-child(2) {
+      animation-delay: 0.45s;
+    }
+
+    .rate-card:nth-child(3) {
+      animation-delay: 0.55s;
+    }
+
+    .rate-card:nth-child(4) {
+      animation-delay: 0.65s;
+    }
+
+    .rate-card:nth-child(5) {
+      animation-delay: 0.75s;
+    }
+
+    .rate-card:nth-child(6) {
+      animation-delay: 0.85s;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== CORNER ACCENTS ===== */
+    .corner-accent {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      z-index: 0;
+    }
+
+    .corner-accent.top-left {
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.04) 0%, transparent 70%);
+    }
+
+    .corner-accent.bottom-right {
+      bottom: 0;
+      right: 0;
+      background: radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.03) 0%, transparent 70%);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background Elements -->
+  <div class="bg-gradient">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+  </div>
+  <div class="corner-accent top-left"></div>
+  <div class="corner-accent bottom-right"></div>
+
+  <!-- Floating Currency Symbols -->
+  <div class="floating-symbols" id="floating-symbols"></div>
+
+  <!-- Floating Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Grid Divider -->
+  <div class="grid-divider"></div>
+
+  <!-- Main Layout -->
+  <div class="main-container">
+
+    <!-- LEFT PANEL — Branding + Chart -->
+    <div class="left-panel">
+      <!-- Logo -->
+      <div class="logo-section">
+        <div class="logo">
+          <span class="logo-wit">WIT</span>
+          <span class="logo-fx">FX</span>
+        </div>
+      </div>
+
+      <!-- Headline -->
+      <div class="headline">
+        <h1>
+          <span class="line1">El mercado cambia.</span>
+          <span class="accent">Tu tipo de cambio no.</span>
+        </h1>
+      </div>
+
+      <!-- Historical Chart -->
+      <div class="chart-section">
+        <div class="chart-header">
+          <div class="chart-pair-info">
+            <div class="chart-pair-flag" id="chart-flag"></div>
+            <div>
+              <div class="chart-pair-name" id="chart-pair-name">USD/MXN</div>
+              <div class="chart-pair-label" id="chart-pair-label">Dólar Americano</div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="historyChart"></canvas>
+          <div class="chart-period-indicator">30 días</div>
+        </div>
+        <div class="chart-dots" id="chart-dots"></div>
+      </div>
+
+      <!-- Clock & Date -->
+      <div class="datetime-container">
+        <div class="clock" id="clock">
+          <span id="clock-hours">00</span><span class="clock-separator">:</span><span id="clock-minutes">00</span>
+        </div>
+        <div class="date-display">
+          <div class="day-name" id="day-name">—</div>
+          <div id="date-full">—</div>
+        </div>
+      </div>
+
+      <!-- Live Indicator -->
+      <div class="live-indicator" id="live-indicator">
+        <div class="live-dot" id="live-dot"></div>
+        <span id="live-text">Conectando...</span>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL — Rates -->
+    <div class="right-panel">
+      <div class="rates-header">
+        <span class="rates-title">Tendencias del Mercado</span>
+      </div>
+
+      <div class="table-header">
+        <span>Divisa</span>
+        <span>30 Días</span>
+        <span>Último Mes (30 días)</span>
+      </div>
+
+      <div class="rates-list" id="rates-list"></div>
+
+      <div class="disclaimer">
+        <span class="disclaimer-icon">ⓘ</span>
+        <span>Los datos de mercado son informativos y reflejan el desempeño de los últimos 30 días. Consulte en
+          sucursal para cotizaciones y operaciones.</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    //  CONFIGURATION
+    // ============================================================
+    const BIG_MOVER_THRESHOLD = 1.5;  // ±1.5% weekly change triggers highlight
+
+    // Weekly change data
+    let weeklyChanges = {};  // { USD: 1.23, EUR: -0.45, ... } percentages
+
+    const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
+    const CHART_CYCLE_MS = 15000; // Switch chart currency every 15 seconds
+
+    // Country codes for flagcdn.com
+    const CURRENCIES = [
+      { code: 'USD', country: 'us', name: 'Dólar Americano', pair: 'USD/MXN', symbol: '$' },
+      { code: 'EUR', country: 'eu', name: 'Euro', pair: 'EUR/MXN', symbol: '€' },
+      { code: 'GBP', country: 'gb', name: 'Libra Esterlina', pair: 'GBP/MXN', symbol: '£' },
+      { code: 'JPY', country: 'jp', name: 'Yen Japonés', pair: '100 JPY/MXN', symbol: '¥' },
+      { code: 'CAD', country: 'ca', name: 'Dólar Canadiense', pair: 'CAD/MXN', symbol: 'C$' },
+      { code: 'CHF', country: 'ch', name: 'Franco Suizo', pair: 'CHF/MXN', symbol: 'Fr' },
+    ];
+
+    const FLAG_URL = (country) => `https://flagcdn.com/w160/${country}.png`;
+
+    const API_ENDPOINTS = [
+      'https://open.er-api.com/v6/latest',
+    ];
+
+    // Frankfurter endpoints for historical chart data only
+    const HISTORICAL_API_ENDPOINTS = [
+      'https://api.frankfurter.app',
+    ];
+
+    // ============================================================
+    //  STATE
+    // ============================================================
+    let currentRates = {};
+    let previousRates = {};
+    let isLoading = true;
+    let historicalData = {};  // { USD: [{date, rate}, ...], EUR: [...], ... }
+    let currentChartIndex = 0;
+    let chartAnimationId = null;
+
+    // ============================================================
+    //  VIEWPORT SCALING
+    // ============================================================
+    function applyScale() {
+      const scaleX = window.innerWidth / 3840;
+      const scaleY = window.innerHeight / 2160;
+      const scale = Math.min(scaleX, scaleY);
+      document.body.style.transform = `scale(${scale})`;
+    }
+    window.addEventListener('resize', applyScale);
+    applyScale();
+
+    // ============================================================
+    //  FLOATING CURRENCY SYMBOLS
+    // ============================================================
+    function createFloatingSymbols() {
+      const container = document.getElementById('floating-symbols');
+      const symbols = ['$', '€', '£', '¥', '₣', '₱', '₩', '₹'];
+      const count = 10;
+
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'float-symbol';
+        el.textContent = symbols[i % symbols.length];
+        const size = Math.random() * 120 + 120; // 120-240px
+        el.style.fontSize = size + 'px';
+        el.style.left = Math.random() * 3600 + 'px';
+        el.style.top = (2160 + Math.random() * 600) + 'px';
+        el.style.animationDuration = (Math.random() * 50 + 40) + 's';
+        el.style.animationDelay = (Math.random() * 30) + 's';
+        el.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+        container.appendChild(el);
+      }
+    }
+
+    // ============================================================
+    //  RENDER RATE CARDS (with flag images)
+    // ============================================================
+    function renderCards() {
+      const list = document.getElementById('rates-list');
+      list.innerHTML = '';
+
+      CURRENCIES.forEach((currency, index) => {
+        const card = document.createElement('div');
+        card.className = 'rate-card' + (isLoading ? ' loading-skeleton' : '');
+        card.id = `card-${currency.code}`;
+        card.style.animationDelay = `${0.35 + index * 0.1}s`;
+
+        const change = weeklyChanges[currency.code];
+        let percentText = '—';
+        let stateClass = 'neutral';
+        let arrowChar = '→';
+
+        if (change !== undefined && change !== null) {
+          const sign = change >= 0 ? '+' : '';
+          percentText = `${sign}${change.toFixed(2)}%`;
+          if (change > 0) { stateClass = 'positive'; arrowChar = '▲'; }
+          else if (change < 0) { stateClass = 'negative'; arrowChar = '▼'; }
+          else { stateClass = 'neutral'; arrowChar = '→'; }
+        }
+
+        const flagSrc = FLAG_URL(currency.country);
+
+        card.innerHTML = `
+          <div class="currency-info">
+            <div class="currency-flag">
+              <img src="${flagSrc}" alt="${currency.code}" loading="lazy">
+            </div>
+            <div class="currency-details">
+              <div class="currency-code">${currency.code}</div>
+              <div class="currency-name">${currency.name}</div>
+              <div class="currency-pair">${currency.pair}</div>
+            </div>
+          </div>
+          <div class="sparkline-container">
+            <canvas class="sparkline" id="spark-${currency.code}" width="200" height="60"></canvas>
+          </div>
+          <div class="rate-value">
+            <div class="rate-change">
+              <div class="rate-change-main">
+                <span class="rate-change-arrow ${stateClass}">${arrowChar}</span>
+                <div class="rate-percent ${stateClass}" id="pct-${currency.code}">${percentText}</div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        list.appendChild(card);
+      });
+
+      // Draw sparklines if historical data is available
+      drawAllSparklines();
+    }
+
+    // ============================================================
+    //  SPARKLINE DRAWING
+    // ============================================================
+    function drawAllSparklines() {
+      CURRENCIES.forEach((currency) => {
+        const data = historicalData[currency.code];
+        if (!data || data.length < 2) return;
+        const change = weeklyChanges[currency.code] || 0;
+        const isPositive = change >= 0;
+        drawSparkline(`spark-${currency.code}`, data, currency.code, isPositive);
+      });
+    }
+
+    function drawSparkline(canvasId, data, currencyCode, isPositive) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const values = data.map(d => currencyCode === 'JPY' ? d.rate * 100 : d.rate);
+      const minVal = Math.min(...values);
+      const maxVal = Math.max(...values);
+      const range = maxVal - minVal || 1;
+
+      const pad = 4;
+      const chartW = w - pad * 2;
+      const chartH = h - pad * 2;
+
+      const points = values.map((v, i) => ({
+        x: pad + (i / (values.length - 1)) * chartW,
+        y: pad + chartH - ((v - minVal) / range) * chartH,
+      }));
+
+      const color = isPositive ? '#22C55E' : '#EF4444';
+      const colorAlpha = isPositive ? 'rgba(34, 197, 94,' : 'rgba(239, 68, 68,';
+
+      // Gradient fill
+      const gradient = ctx.createLinearGradient(0, pad, 0, h - pad);
+      gradient.addColorStop(0, `${colorAlpha} 0.2)`);
+      gradient.addColorStop(1, `${colorAlpha} 0)`);
+
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+      }
+      ctx.lineTo(points[points.length - 1].x, h - pad);
+      ctx.lineTo(points[0].x, h - pad);
+      ctx.closePath();
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // Line
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+
+      // End dot
+      const lastPt = points[points.length - 1];
+      ctx.beginPath();
+      ctx.arc(lastPt.x, lastPt.y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+
+    // ============================================================
+    //  FETCH LATEST RATES (using open.er-api.com — CORS enabled)
+    // ============================================================
+    async function fetchRates() {
+      for (const base of API_ENDPOINTS) {
+        try {
+          const url = `${base}/MXN`;
+          const response = await fetch(url);
+          if (!response.ok) continue;
+          const data = await response.json();
+          if (data.result !== 'success') continue;
+
+          previousRates = { ...currentRates };
+          CURRENCIES.forEach((c) => {
+            if (data.rates && data.rates[c.code]) {
+              // API returns MXN->X rate, we need X->MXN (i.e. 1/rate)
+              currentRates[c.code] = 1 / data.rates[c.code];
+            }
+          });
+
+          // Compute weekly changes from historical data if available
+          computeWeeklyChanges();
+
+          isLoading = false;
+          updateDisplay();
+          setLiveStatus(true, `Actualizado: ${new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}`);
+          return;
+        } catch (err) {
+          console.warn(`Endpoint failed: ${base}`, err);
+        }
+      }
+
+      console.error('All API endpoints failed');
+      setLiveStatus(false, 'Error de conexión — reintentando...');
+      setTimeout(fetchRates, 30000);
+    }
+
+    // ============================================================
+    //  COMPUTE MONTHLY CHANGES from historical data
+    // ============================================================
+    function computeWeeklyChanges() {
+      const now = new Date();
+      const weekAgoTarget = new Date(now);
+      weekAgoTarget.setDate(weekAgoTarget.getDate() - 30);
+      const weekAgoStr = weekAgoTarget.toISOString().split('T')[0];
+
+      CURRENCIES.forEach((c) => {
+        const data = historicalData[c.code];
+        if (!data || data.length < 2 || !currentRates[c.code]) return;
+
+        // Find the data point closest to 7 days ago
+        let weekAgoRate = null;
+        for (let i = data.length - 1; i >= 0; i--) {
+          if (data[i].date <= weekAgoStr) {
+            weekAgoRate = data[i].rate;
+            break;
+          }
+        }
+
+        if (weekAgoRate && weekAgoRate > 0) {
+          const currentRate = currentRates[c.code];
+          weeklyChanges[c.code] = ((currentRate - weekAgoRate) / weekAgoRate) * 100;
+        }
+      });
+    }
+
+    // ============================================================
+    //  FETCH HISTORICAL DATA (30 days)
+    // ============================================================
+    async function fetchHistoricalData() {
+      const now = new Date();
+      const thirtyDaysAgo = new Date(now);
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+      const startDate = thirtyDaysAgo.toISOString().split('T')[0];
+      const endDate = now.toISOString().split('T')[0];
+      const codes = CURRENCIES.map(c => c.code).join(',');
+
+      for (const base of HISTORICAL_API_ENDPOINTS) {
+        try {
+          const apiUrl = `${base}/${startDate}..${endDate}?from=MXN&to=${codes}`;
+          const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
+          const response = await fetch(proxyUrl);
+          if (!response.ok) continue;
+          const data = await response.json();
+
+          // Parse into per-currency arrays
+          // data.rates = { "2025-10-01": { USD: 0.05475, EUR: ... }, ... }
+          const dates = Object.keys(data.rates).sort();
+          CURRENCIES.forEach((c) => {
+            historicalData[c.code] = dates
+              .filter(d => data.rates[d][c.code] !== undefined)
+              .map(d => ({
+                date: d,
+                rate: 1 / data.rates[d][c.code], // Convert to "1 CURRENCY = X MXN"
+              }));
+          });
+
+          // Recompute weekly changes now that historical data is available
+          computeWeeklyChanges();
+          updateDisplay();
+
+          // Start chart cycling
+          renderChartDots();
+          showChart(0, false);  // no animation on first load
+          return;
+        } catch (err) {
+          console.warn(`Historical fetch failed: ${base}`, err);
+        }
+      }
+    }
+
+    // ============================================================
+    //  CHART RENDERING (Canvas)
+    // ============================================================
+    function renderChartDots() {
+      const container = document.getElementById('chart-dots');
+      container.innerHTML = '';
+      CURRENCIES.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'chart-dot' + (i === 0 ? ' active' : '');
+        dot.id = `chart-dot-${i}`;
+        container.appendChild(dot);
+      });
+    }
+
+    function showChart(index, animate = true) {
+      const currency = CURRENCIES[index];
+      const data = historicalData[currency.code];
+      if (!data || data.length === 0) return;
+
+      const canvas = document.getElementById('historyChart');
+      const nameEl = document.getElementById('chart-pair-name');
+      const labelEl = document.getElementById('chart-pair-label');
+      const flagEl = document.getElementById('chart-flag');
+
+      const FADE_MS = 400;
+
+      const doUpdate = () => {
+        currentChartIndex = index;
+
+        // Swap header content
+        flagEl.innerHTML = `<img src="${FLAG_URL(currency.country)}" alt="${currency.code}">`;
+        nameEl.textContent = currency.pair;
+        labelEl.textContent = currency.name;
+
+        // Update dots
+        CURRENCIES.forEach((_, i) => {
+          const dot = document.getElementById(`chart-dot-${i}`);
+          if (dot) dot.className = 'chart-dot' + (i === index ? ' active' : '');
+        });
+
+        // Redraw canvas
+        drawChart(data, currency.code);
+      };
+
+      if (!animate) {
+        doUpdate();
+        return;
+      }
+
+      // Phase 1: fade out
+      canvas.classList.add('fading');
+      nameEl.classList.add('fading');
+
+      setTimeout(() => {
+        doUpdate();
+
+        // Phase 2: fade in (remove fading class to trigger CSS transition back)
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            canvas.classList.remove('fading');
+            nameEl.classList.remove('fading');
+          });
+        });
+      }, FADE_MS);
+    }
+
+    function drawChart(data, currencyCode) {
+      const canvas = document.getElementById('historyChart');
+      const container = canvas.parentElement;
+      const dpr = 1; // We handle scaling via CSS transform
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      if (data.length < 2) return;
+
+      // Get values — for JPY show per-100-yen rate
+      const values = data.map(d => currencyCode === 'JPY' ? d.rate * 100 : d.rate);
+      const minVal = Math.min(...values);
+      const maxVal = Math.max(...values);
+      const range = maxVal - minVal || 1;
+
+      const padTop = 60;
+      const padBottom = 80;
+      const padLeft = 40;
+      const padRight = 40;
+      const chartW = w - padLeft - padRight;
+      const chartH = h - padTop - padBottom;
+
+      // Map data to canvas points
+      const points = values.map((v, i) => ({
+        x: padLeft + (i / (values.length - 1)) * chartW,
+        y: padTop + chartH - ((v - minVal) / range) * chartH,
+      }));
+
+      // Determine trend direction for coloring
+      const trendUp = values[values.length - 1] >= values[0];
+      const lineColor = trendUp ? '#22C55E' : '#EF4444';
+      const glowColor = trendUp ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)';
+      const dotRingColor = trendUp ? 'rgba(34, 197, 94, 0.4)' : 'rgba(239, 68, 68, 0.4)';
+
+      // Draw gradient fill
+      const gradient = ctx.createLinearGradient(0, padTop, 0, h - padBottom);
+      if (trendUp) {
+        gradient.addColorStop(0, 'rgba(34, 197, 94, 0.15)');
+        gradient.addColorStop(0.6, 'rgba(34, 197, 94, 0.03)');
+        gradient.addColorStop(1, 'rgba(34, 197, 94, 0)');
+      } else {
+        gradient.addColorStop(0, 'rgba(239, 68, 68, 0.15)');
+        gradient.addColorStop(0.6, 'rgba(239, 68, 68, 0.03)');
+        gradient.addColorStop(1, 'rgba(239, 68, 68, 0)');
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+      }
+      ctx.lineTo(points[points.length - 1].x, h - padBottom);
+      ctx.lineTo(points[0].x, h - padBottom);
+      ctx.closePath();
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // Draw line
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+      }
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth = 3;
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+
+      // Glow effect
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+      }
+      ctx.strokeStyle = glowColor;
+      ctx.lineWidth = 8;
+      ctx.filter = 'blur(6px)';
+      ctx.stroke();
+      ctx.filter = 'none';
+
+      // Draw current price dot at end
+      const lastPt = points[points.length - 1];
+      ctx.beginPath();
+      ctx.arc(lastPt.x, lastPt.y, 8, 0, Math.PI * 2);
+      ctx.fillStyle = lineColor;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(lastPt.x, lastPt.y, 14, 0, Math.PI * 2);
+      ctx.strokeStyle = dotRingColor;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Draw week labels on x-axis
+      ctx.font = '22px Inter, sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.textAlign = 'center';
+
+      const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+      data.forEach((d, i) => {
+        const date = new Date(d.date);
+        // Draw label for every Monday
+        if (date.getDay() === 1 && i > 0 && i < data.length - 1) {
+          const x = points[i].x;
+          const text = `${date.getDate()} ${monthNames[date.getMonth()]}`;
+          ctx.fillText(text, x, h - padBottom + 40);
+
+          // Draw subtle grid line
+          ctx.beginPath();
+          ctx.moveTo(x, padTop);
+          ctx.lineTo(x, h - padBottom);
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      });
+
+      // Draw y-axis price labels
+      ctx.textAlign = 'right';
+      ctx.font = '20px Inter, sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+      const numLabels = 4;
+      for (let i = 0; i <= numLabels; i++) {
+        const val = minVal + (range * i / numLabels);
+        const y = padTop + chartH - (i / numLabels) * chartH;
+        ctx.fillText('$' + val.toFixed(2), w - padRight - 10, y + 6);
+
+        // Horizontal grid line
+        ctx.beginPath();
+        ctx.moveTo(padLeft, y);
+        ctx.lineTo(w - padRight, y);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+
+    function startChartCycling() {
+      setInterval(() => {
+        const nextIndex = (currentChartIndex + 1) % CURRENCIES.length;
+        showChart(nextIndex, true); // animated transition
+      }, CHART_CYCLE_MS);
+    }
+
+    // ============================================================
+    //  UPDATE DISPLAY
+    // ============================================================
+    function updateDisplay() {
+      CURRENCIES.forEach((currency) => {
+        const card = document.getElementById(`card-${currency.code}`);
+        const pctEl = document.getElementById(`pct-${currency.code}`);
+        if (!card || !pctEl) return;
+
+        const change = weeklyChanges[currency.code];
+        if (change === undefined || change === null) return;
+
+        card.classList.remove('loading-skeleton');
+
+        const sign = change >= 0 ? '+' : '';
+        const percentText = `${sign}${change.toFixed(2)}%`;
+        let stateClass = 'neutral';
+        let arrowChar = '→';
+
+        if (change > 0) { stateClass = 'positive'; arrowChar = '▲'; }
+        else if (change < 0) { stateClass = 'negative'; arrowChar = '▼'; }
+
+        // Big mover badge
+        const prevChange = pctEl.textContent;
+        const hasChanged = prevChange !== percentText && prevChange !== '—';
+
+        if (hasChanged) {
+          pctEl.classList.add('changing');
+          setTimeout(() => {
+            pctEl.textContent = percentText;
+            pctEl.className = `rate-percent ${stateClass}`;
+            const label = card.querySelector('.rate-change-label');
+            const arrow = card.querySelector('.rate-change-arrow');
+            if (label) label.className = `rate-change-label ${stateClass}`;
+            if (arrow) { arrow.className = `rate-change-arrow ${stateClass}`; arrow.textContent = arrowChar; }
+            card.classList.add('flash');
+            setTimeout(() => card.classList.remove('flash'), 2000);
+          }, 300);
+        } else {
+          pctEl.textContent = percentText;
+          pctEl.className = `rate-percent ${stateClass}`;
+          const label = card.querySelector('.rate-change-label');
+          const arrow = card.querySelector('.rate-change-arrow');
+          if (label) label.className = `rate-change-label ${stateClass}`;
+          if (arrow) { arrow.className = `rate-change-arrow ${stateClass}`; arrow.textContent = arrowChar; }
+        }
+      });
+
+      // Redraw sparklines with updated data
+      drawAllSparklines();
+    }
+
+    // ============================================================
+    //  LIVE STATUS
+    // ============================================================
+    function setLiveStatus(isLive, text) {
+      const dot = document.getElementById('live-dot');
+      const label = document.getElementById('live-text');
+      dot.classList.toggle('error', !isLive);
+      label.textContent = text;
+    }
+
+    // ============================================================
+    //  CLOCK
+    // ============================================================
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock-hours').textContent = String(now.getHours()).padStart(2, '0');
+      document.getElementById('clock-minutes').textContent = String(now.getMinutes()).padStart(2, '0');
+
+      const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+      const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+      document.getElementById('day-name').textContent = days[now.getDay()];
+      document.getElementById('date-full').textContent = `${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
+    }
+
+    // ============================================================
+    //  PARTICLES
+    // ============================================================
+    function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 18; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 5 + 2;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = Math.random() * 3840 + 'px';
+        p.style.top = (2160 + Math.random() * 400) + 'px';
+        p.style.animationDuration = (Math.random() * 35 + 25) + 's';
+        p.style.animationDelay = (Math.random() * 25) + 's';
+        container.appendChild(p);
+      }
+    }
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    async function init() {
+      renderCards();
+      createParticles();
+      createFloatingSymbols();
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      await fetchRates();
+      setInterval(fetchRates, REFRESH_INTERVAL_MS);
+
+      // Fetch historical data for charts, then start cycling
+      await fetchHistoricalData();
+      startChartCycling();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+
+</html>
