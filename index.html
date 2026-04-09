@@ -216,19 +216,35 @@
       height: 2160px;
       display: grid;
       grid-template-columns: 56fr 44fr;
+      grid-template-rows: 1fr auto;
     }
 
-    /* ===== LEFT PANEL — BRANDING ===== */
+    /* ===== LEFT PANEL ===== */
     .left-panel {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 80px 100px 80px 140px;
+      padding: 80px 100px 40px 140px;
       position: relative;
     }
 
-    .logo-section {
+    .left-panel-header {
+      display: flex;
+      align-items: center;
+      gap: 60px;
       margin-bottom: 50px;
+    }
+
+    .page-footer {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 60px;
+      gap: 16px;
+    }
+
+    .logo-section {
+      margin-bottom: 0;
     }
 
     .logo {
@@ -259,7 +275,7 @@
 
     /* ===== HEADLINE ===== */
     .headline {
-      margin-bottom: 50px;
+      margin-bottom: 0;
     }
 
     .headline h1 {
@@ -267,7 +283,7 @@
       font-weight: 800;
       line-height: 1.08;
       letter-spacing: -3px;
-      margin-bottom: 32px;
+      margin-bottom: 0;
     }
 
     .headline h1 .line1 {
@@ -296,11 +312,12 @@
 
     /* ===== CHART SECTION ===== */
     .chart-section {
-      flex: 0 0 auto;
+      flex: 1 1 auto;
       display: flex;
       flex-direction: column;
       margin-top: 40px;
-      margin-bottom: 40px;
+      margin-bottom: 0px;
+      min-height: 0;
     }
 
     .chart-header {
@@ -376,7 +393,8 @@
       border: 1px solid var(--border-card);
       border-radius: 20px;
       overflow: hidden;
-      height: 1100px;
+      flex: 1 1 auto;
+      min-height: 800px;
     }
 
     #historyChart {
@@ -433,7 +451,6 @@
       display: flex;
       align-items: center;
       gap: 40px;
-      margin-top: 40px;
     }
 
     .clock {
@@ -487,7 +504,7 @@
       color: var(--text-muted);
       letter-spacing: 2px;
       text-transform: uppercase;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     .live-dot {
@@ -538,7 +555,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 80px 100px 80px 60px;
+      padding: 80px 100px 40px 60px;
     }
 
     .rates-header {
@@ -1011,22 +1028,26 @@
   <!-- Main Layout -->
   <div class="main-container">
 
-    <!-- LEFT PANEL — Branding + Chart -->
+    <!-- LEFT PANEL — Layout -->
     <div class="left-panel">
-      <!-- Logo -->
-      <div class="logo-section">
-        <div class="logo">
-          <span class="logo-wit">WIT</span>
-          <span class="logo-fx">FX</span>
-        </div>
-      </div>
 
-      <!-- Headline -->
-      <div class="headline">
-        <h1>
-          <span class="line1">El mercado cambia.</span>
-          <span class="accent">Tu tipo de cambio no.</span>
-        </h1>
+      <!-- Top Header Row (Logo + Headline) -->
+      <div class="left-panel-header">
+        <!-- Logo -->
+        <div class="logo-section">
+          <div class="logo">
+            <span class="logo-wit">WIT</span>
+            <span class="logo-fx">FX</span>
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <div class="headline">
+          <h1>
+            <span class="line1">El mercado cambia.</span>
+            <span class="accent">Tu tipo de cambio no.</span>
+          </h1>
+        </div>
       </div>
 
       <!-- Historical Chart -->
@@ -1046,26 +1067,9 @@
         </div>
         <div class="chart-dots" id="chart-dots"></div>
       </div>
-
-      <!-- Clock & Date -->
-      <div class="datetime-container">
-        <div class="clock" id="clock">
-          <span id="clock-hours">00</span><span class="clock-separator">:</span><span id="clock-minutes">00</span>
-        </div>
-        <div class="date-display">
-          <div class="day-name" id="day-name">—</div>
-          <div id="date-full">—</div>
-        </div>
-      </div>
-
-      <!-- Live Indicator -->
-      <div class="live-indicator" id="live-indicator">
-        <div class="live-dot" id="live-dot"></div>
-        <span id="live-text">Conectando...</span>
-      </div>
     </div>
 
-    <!-- RIGHT PANEL — Rates -->
+    <!-- RIGHT PANEL — Target centered rates list -->
     <div class="right-panel">
       <div class="rates-header">
         <span class="rates-title">Tendencias del Mercado</span>
@@ -1083,6 +1087,23 @@
         <span class="disclaimer-icon">ⓘ</span>
         <span>Los datos de mercado son informativos y reflejan el desempeño de los últimos 30 días. Consulte en
           sucursal para cotizaciones y operaciones.</span>
+      </div>
+    </div>
+
+    <!-- PAGE FOOTER: Clock, Date & Live Indicator -->
+    <div class="page-footer">
+      <div class="datetime-container">
+        <div class="clock" id="clock">
+          <span id="clock-hours">00</span><span class="clock-separator">:</span><span id="clock-minutes">00</span>
+        </div>
+        <div class="date-display">
+          <div class="day-name" id="day-name">—</div>
+          <div id="date-full">—</div>
+        </div>
+      </div>
+      <div class="live-indicator" id="live-indicator">
+        <div class="live-dot" id="live-dot"></div>
+        <span id="live-text">Conectando...</span>
       </div>
     </div>
   </div>
