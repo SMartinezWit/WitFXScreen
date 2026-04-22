@@ -397,110 +397,73 @@
       min-height: 650px;
     }
 
-    /* ===== DYNAMIC CHART TEXT ===== */
+    /* ===== DYNAMIC CHART TEXT (overlay inside chart) ===== */
     .dynamic-chart-text {
-      margin-top: 36px;
-      text-align: center;
-      min-height: 140px;
+      position: absolute;
+      bottom: 60px;
+      left: 50px;
+      z-index: 3;
+      pointer-events: none;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.5s ease, transform 0.5s ease, background 0.5s ease, border-color 0.5s ease;
-      padding: 24px;
-      border-radius: 20px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    }
-
-    .dynamic-chart-text.positive {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.02) 100%);
-      border: 1px solid rgba(34, 197, 94, 0.25);
-    }
-
-    .dynamic-chart-text.negative {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.02) 100%);
-      border: 1px solid rgba(239, 68, 68, 0.25);
-    }
-
-    .dynamic-chart-text.neutral {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .dynamic-chart-text::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      animation: dynTextPulse 3s infinite alternate;
-    }
-
-    .dynamic-chart-text.positive::after {
-      box-shadow: inset 0 0 30px rgba(34, 197, 94, 0.1);
-    }
-
-    .dynamic-chart-text.negative::after {
-      box-shadow: inset 0 0 30px rgba(239, 68, 68, 0.1);
-    }
-
-    .dynamic-chart-text.neutral::after {
-      box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.05);
-    }
-
-    @keyframes dynTextPulse {
-      0% {
-        opacity: 0.3;
-      }
-
-      100% {
-        opacity: 1;
-      }
+      align-items: flex-start;
+      gap: 20px;
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     .dynamic-chart-text.fading {
       opacity: 0;
-      transform: translateY(-12px);
+      transform: translateY(10px);
     }
 
     .dynamic-chart-text .line1 {
       display: block;
-      font-size: 46px;
+      font-size: 72px;
       font-weight: 800;
-      color: var(--text-primary);
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      color: #FFFFFF;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.8),
+        0 4px 24px rgba(0, 0, 0, 0.6),
+        0 0 60px rgba(0, 0, 0, 0.4);
+      max-width: 900px;
     }
 
     .dynamic-chart-text .accent {
-      display: inline-block;
-      font-size: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 38px;
       font-weight: 700;
-      padding: 10px 28px;
-      border-radius: 16px;
-      letter-spacing: -0.5px;
+      padding: 16px 36px;
+      border-radius: 14px;
+      letter-spacing: -0.3px;
+      white-space: nowrap;
+    }
+
+    .dynamic-chart-text .accent-icon {
+      font-size: 36px;
+      flex-shrink: 0;
     }
 
     .dynamic-chart-text.positive .accent {
-      background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-light) 60%, #6EE7B7 100%);
-      color: #000;
-      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+      background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+      color: #fff;
+      box-shadow: 0 6px 30px rgba(34, 197, 94, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
     }
 
     .dynamic-chart-text.negative .accent {
-      background: linear-gradient(135deg, var(--red-primary) 0%, var(--red-light) 60%, #FCA5A5 100%);
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
       color: #fff;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+      box-shadow: 0 6px 30px rgba(22, 160, 61, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
     }
 
     .dynamic-chart-text.neutral .accent {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
     #historyChart {
@@ -902,28 +865,32 @@
     /* ===== BIG MOVER INDICATOR ===== */
     .big-mover-badge {
       position: absolute;
-      top: 12px;
-      right: 16px;
-      font-size: 16px;
-      font-weight: 700;
-      padding: 5px 16px;
+      top: 14px;
+      right: 20px;
+      font-size: 15px;
+      font-weight: 800;
+      padding: 6px 16px;
       border-radius: 20px;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       z-index: 2;
       animation: badgePulse 3s ease-in-out infinite;
     }
 
     .big-mover-badge.up {
-      background: rgba(34, 197, 94, 0.12);
-      border: 1px solid rgba(34, 197, 94, 0.3);
-      color: var(--green-primary);
+      background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
+      border: 1px solid #FDE047;
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
     }
 
     .big-mover-badge.down {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: var(--red-primary);
+      background: linear-gradient(135deg, #38BDF8 0%, #0284C7 100%);
+      border: 1px solid #7DD3FC;
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
     }
 
     @keyframes badgePulse {
@@ -935,7 +902,7 @@
       }
 
       50% {
-        opacity: 0.85;
+        opacity: 0.9;
         transform: scale(1.05);
       }
     }
@@ -1228,17 +1195,18 @@
             <div class="chart-pair-flag" id="chart-flag"></div>
             <div>
               <div class="chart-pair-name" id="chart-pair-name">USD/MXN</div>
-              <div class="chart-pair-label" id="chart-pair-label">Dólar Americano</div>
+              <div class="chart-pair-label" id="chart-pair-label">Dólar</div>
             </div>
           </div>
         </div>
         <div class="chart-container">
           <canvas id="historyChart"></canvas>
           <div class="chart-period-indicator">30 días</div>
-        </div>
-        <div class="dynamic-chart-text" id="dynamic-chart-text">
-          <span class="line1" id="dyn-line1"></span>
-          <span class="accent" id="dyn-accent"></span>
+          <div class="dynamic-chart-text" id="dynamic-chart-text">
+            <span class="line1" id="dyn-line1"></span>
+            <span class="accent" id="dyn-accent"><span class="accent-icon" id="dyn-icon"></span><span
+                id="dyn-accent-text"></span></span>
+          </div>
         </div>
         <div class="chart-dots" id="chart-dots"></div>
       </div>
@@ -1413,7 +1381,7 @@
               </div>
             </div>
           </div>
-          ${Math.abs(change) >= BIG_MOVER_THRESHOLD ? `<span class="big-mover-badge ${change > 0 ? 'up' : 'down'}">${change > 0 ? '⬆ Aprovecha' : '⬇ Oportunidad'}</span>` : ''}
+          ${Math.abs(change) >= BIG_MOVER_THRESHOLD ? `<span class="big-mover-badge ${change > 0 ? 'up' : 'down'}">${change > 0 ? '⬆ Venta' : '⬇ Compra'}</span>` : ''}
         `;
 
         // Apply big-mover card glow
@@ -1629,6 +1597,8 @@
       const dynTextEl = document.getElementById('dynamic-chart-text');
       const dynLine1 = document.getElementById('dyn-line1');
       const dynAccent = document.getElementById('dyn-accent');
+      const dynIcon = document.getElementById('dyn-icon');
+      const dynAccentText = document.getElementById('dyn-accent-text');
 
       const FADE_MS = 400;
 
@@ -1654,16 +1624,16 @@
         if (change > 0) {
           dynTextEl.classList.add('positive');
           msgs = [
-            { l1: `${currency.name} al alza.`, ac: `¿Un buen momento para vender?` },
+            { l1: `${currency.name} al alza.`, ac: `Oportunidad para vender` },
             { l1: `El valor de ${currency.name} ha subido.`, ac: `Consulta tu cotización en ventanilla.` },
-            { l1: `${currency.name} con tendencia positiva.`, ac: `Aprovecha el tipo de cambio de hoy.` }
+            { l1: `${currency.name} con tendencia positiva.`, ac: `Momento interesante para vender.` }
           ];
         } else if (change < 0) {
           dynTextEl.classList.add('negative');
           msgs = [
-            { l1: `${currency.name} a la baja.`, ac: `¿Oportunidad para comprar?` },
-            { l1: `${currency.name} muestra una bajada.`, ac: `Pregunta por el tipo de cambio actual.` },
-            { l1: `El precio de ${currency.name} ha bajado.`, ac: `Un momento interesante para adquirir.` }
+            { l1: `${currency.name} a la baja.`, ac: `Oportunidad para comprar` },
+            { l1: `${currency.name} muestra una bajada.`, ac: `Consulta tu cotización en ventanilla.` },
+            { l1: `El precio de ${currency.name} ha bajado.`, ac: `Momento interesante para adquirir.` }
           ];
         } else {
           dynTextEl.classList.add('neutral');
@@ -1673,7 +1643,8 @@
         }
         const selectedMsg = msgs[Math.floor(Math.random() * msgs.length)];
         dynLine1.textContent = selectedMsg.l1;
-        dynAccent.textContent = selectedMsg.ac;
+        if (dynAccentText) dynAccentText.textContent = selectedMsg.ac;
+        if (dynIcon) dynIcon.textContent = change > 0 ? '📈' : change < 0 ? '🛒' : '➡️';
 
         // Redraw canvas
         drawChart(data, currency.code);
@@ -1742,6 +1713,14 @@
       const lineColor = trendUp ? '#22C55E' : '#EF4444';
       const glowColor = trendUp ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)';
       const dotRingColor = trendUp ? 'rgba(34, 197, 94, 0.4)' : 'rgba(239, 68, 68, 0.4)';
+
+      // Draw left-side scrim for text legibility
+      const scrim = ctx.createLinearGradient(0, 0, w * 0.65, 0);
+      scrim.addColorStop(0, 'rgba(5, 5, 5, 0.72)');
+      scrim.addColorStop(0.5, 'rgba(5, 5, 5, 0.38)');
+      scrim.addColorStop(1, 'rgba(5, 5, 5, 0)');
+      ctx.fillStyle = scrim;
+      ctx.fillRect(0, 0, w, h);
 
       // Draw gradient fill
       const gradient = ctx.createLinearGradient(0, padTop, 0, h - padBottom);
