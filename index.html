@@ -394,7 +394,65 @@
       border-radius: 20px;
       overflow: hidden;
       flex: 1 1 auto;
-      min-height: 800px;
+      min-height: 650px;
+    }
+
+    /* ===== DYNAMIC CHART TEXT ===== */
+    .dynamic-chart-text {
+      margin-top: 36px;
+      text-align: center;
+      min-height: 110px;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, transparent 100%);
+      border: 1px solid rgba(34, 197, 94, 0.15);
+      border-radius: 16px;
+      position: relative;
+    }
+
+    .dynamic-chart-text::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      pointer-events: none;
+      box-shadow: inset 0 0 20px rgba(34, 197, 94, 0.05);
+      animation: dynTextPulse 3s infinite alternate;
+    }
+
+    @keyframes dynTextPulse {
+      0% {
+        opacity: 0.3;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .dynamic-chart-text.fading {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+
+    .dynamic-chart-text .line1 {
+      display: block;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .dynamic-chart-text .accent {
+      display: block;
+      font-size: 38px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-light) 60%, #6EE7B7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
     }
 
     #historyChart {
@@ -793,22 +851,31 @@
       display: block;
     }
 
-    /* ===== BIG MOVER BADGE ===== */
+    /* ===== BIG MOVER INDICATOR ===== */
     .big-mover-badge {
       position: absolute;
-      top: 10px;
-      right: 14px;
-      background: rgba(255, 200, 0, 0.12);
-      border: 1px solid rgba(255, 200, 0, 0.25);
-      color: #FFC800;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 3px 12px;
+      top: 12px;
+      right: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 5px 16px;
       border-radius: 20px;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      animation: badgePulse 2.5s ease-in-out infinite;
       z-index: 2;
+      animation: badgePulse 3s ease-in-out infinite;
+    }
+
+    .big-mover-badge.up {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: var(--green-primary);
+    }
+
+    .big-mover-badge.down {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--red-primary);
     }
 
     @keyframes badgePulse {
@@ -816,17 +883,54 @@
       0%,
       100% {
         opacity: 1;
-        box-shadow: 0 0 8px rgba(255, 200, 0, 0.1);
+        transform: scale(1);
       }
 
       50% {
-        opacity: 0.75;
-        box-shadow: 0 0 20px rgba(255, 200, 0, 0.25);
+        opacity: 0.85;
+        transform: scale(1.05);
       }
     }
 
-    .rate-card.big-mover {
-      border-color: rgba(255, 200, 0, 0.15);
+    .rate-card.big-mover-up {
+      border-color: rgba(34, 197, 94, 0.2);
+      box-shadow: inset 0 0 30px rgba(34, 197, 94, 0.04), 0 0 20px rgba(34, 197, 94, 0.06);
+    }
+
+    .rate-card.big-mover-down {
+      border-color: rgba(239, 68, 68, 0.2);
+      box-shadow: inset 0 0 30px rgba(239, 68, 68, 0.04), 0 0 20px rgba(239, 68, 68, 0.06);
+    }
+
+    /* Heartbeat for big mover percentages */
+    .rate-card.big-mover-up .rate-percent,
+    .rate-card.big-mover-down .rate-percent {
+      animation: heartbeat 2s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes heartbeat {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      15% {
+        transform: scale(1.07);
+      }
+
+      30% {
+        transform: scale(1);
+      }
+
+      45% {
+        transform: scale(1.07);
+      }
+
+      60% {
+        transform: scale(1);
+      }
     }
 
     /* Rate flash animation */
@@ -1003,6 +1107,25 @@
       right: 0;
       background: radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.03) 0%, transparent 70%);
     }
+
+    /* ===== DYNAMIC HEADLINE TRANSITIONS ===== */
+    .headline h1 .line1,
+    .headline h1 .accent {
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .headline h1 .line1.headline-fading,
+    .headline h1 .accent.headline-fading {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    /* ===== UPDATED DISCLAIMER ===== */
+    .disclaimer-legal {
+      margin-top: 6px;
+      font-style: italic;
+      opacity: 0.8;
+    }
   </style>
 </head>
 
@@ -1045,7 +1168,7 @@
         <div class="headline">
           <h1>
             <span class="line1">El mercado cambia.</span>
-            <span class="accent">Tu tipo de cambio no.</span>
+            <span class="accent">Aprovecha el momento.</span>
           </h1>
         </div>
       </div>
@@ -1064,6 +1187,10 @@
         <div class="chart-container">
           <canvas id="historyChart"></canvas>
           <div class="chart-period-indicator">30 días</div>
+        </div>
+        <div class="dynamic-chart-text" id="dynamic-chart-text">
+          <span class="line1" id="dyn-line1"></span>
+          <span class="accent" id="dyn-accent"></span>
         </div>
         <div class="chart-dots" id="chart-dots"></div>
       </div>
@@ -1086,7 +1213,10 @@
       <div class="disclaimer">
         <span class="disclaimer-icon">ⓘ</span>
         <span>Los datos de mercado son informativos y reflejan el desempeño de los últimos 30 días. Consulte en
-          sucursal para cotizaciones y operaciones.</span>
+          sucursal para cotizaciones y operaciones.
+          <span class="disclaimer-legal">Esta información no constituye asesoría financiera ni recomendación de compra o
+            venta de divisas.</span>
+        </span>
       </div>
     </div>
 
@@ -1236,7 +1366,13 @@
               </div>
             </div>
           </div>
+          ${Math.abs(change) >= BIG_MOVER_THRESHOLD ? `<span class="big-mover-badge ${change > 0 ? 'up' : 'down'}">${change > 0 ? '⬆ Aprovecha' : '⬇ Oportunidad'}</span>` : ''}
         `;
+
+        // Apply big-mover card glow
+        if (Math.abs(change) >= BIG_MOVER_THRESHOLD) {
+          card.classList.add(change > 0 ? 'big-mover-up' : 'big-mover-down');
+        }
 
         list.appendChild(card);
       });
@@ -1356,30 +1492,19 @@
     }
 
     // ============================================================
-    //  COMPUTE MONTHLY CHANGES from historical data
+    //  COMPUTE 30-DAY CHANGES from historical data (single source: ECB/Frankfurter)
     // ============================================================
     function computeWeeklyChanges() {
-      const now = new Date();
-      const weekAgoTarget = new Date(now);
-      weekAgoTarget.setDate(weekAgoTarget.getDate() - 30);
-      const weekAgoStr = weekAgoTarget.toISOString().split('T')[0];
-
       CURRENCIES.forEach((c) => {
         const data = historicalData[c.code];
-        if (!data || data.length < 2 || !currentRates[c.code]) return;
+        if (!data || data.length < 2) return;
 
-        // Find the data point closest to 7 days ago
-        let weekAgoRate = null;
-        for (let i = data.length - 1; i >= 0; i--) {
-          if (data[i].date <= weekAgoStr) {
-            weekAgoRate = data[i].rate;
-            break;
-          }
-        }
+        // Use first and last data points from Frankfurter (same source = consistent)
+        const oldRate = data[0].rate;
+        const latestRate = data[data.length - 1].rate;
 
-        if (weekAgoRate && weekAgoRate > 0) {
-          const currentRate = currentRates[c.code];
-          weeklyChanges[c.code] = ((currentRate - weekAgoRate) / weekAgoRate) * 100;
+        if (oldRate && oldRate > 0) {
+          weeklyChanges[c.code] = ((latestRate - oldRate) / oldRate) * 100;
         }
       });
     }
@@ -1454,6 +1579,10 @@
       const labelEl = document.getElementById('chart-pair-label');
       const flagEl = document.getElementById('chart-flag');
 
+      const dynTextEl = document.getElementById('dynamic-chart-text');
+      const dynLine1 = document.getElementById('dyn-line1');
+      const dynAccent = document.getElementById('dyn-accent');
+
       const FADE_MS = 400;
 
       const doUpdate = () => {
@@ -1470,6 +1599,30 @@
           if (dot) dot.className = 'chart-dot' + (i === index ? ' active' : '');
         });
 
+        // Set dynamic text
+        const change = weeklyChanges[currency.code] || 0;
+        let msgs = [];
+        if (change > 0) {
+          msgs = [
+            { l1: `${currency.name} al alza.`, ac: `¿Un buen momento para vender?` },
+            { l1: `El valor de ${currency.name} ha subido.`, ac: `Consulta tu cotización en ventanilla.` },
+            { l1: `${currency.name} con tendencia positiva.`, ac: `Aprovecha el tipo de cambio de hoy.` }
+          ];
+        } else if (change < 0) {
+          msgs = [
+            { l1: `${currency.name} a la baja.`, ac: `¿Oportunidad para comprar?` },
+            { l1: `${currency.name} muestra una bajada.`, ac: `Pregunta por el tipo de cambio actual.` },
+            { l1: `El precio de ${currency.name} ha bajado.`, ac: `Un momento interesante para adquirir.` }
+          ];
+        } else {
+          msgs = [
+            { l1: `${currency.name} se mantiene estable.`, ac: `Cotiza tus divisas sin compromiso.` }
+          ];
+        }
+        const selectedMsg = msgs[Math.floor(Math.random() * msgs.length)];
+        dynLine1.textContent = selectedMsg.l1;
+        dynAccent.textContent = selectedMsg.ac;
+
         // Redraw canvas
         drawChart(data, currency.code);
       };
@@ -1482,6 +1635,7 @@
       // Phase 1: fade out
       canvas.classList.add('fading');
       nameEl.classList.add('fading');
+      dynTextEl.classList.add('fading');
 
       setTimeout(() => {
         doUpdate();
@@ -1491,6 +1645,7 @@
           requestAnimationFrame(() => {
             canvas.classList.remove('fading');
             nameEl.classList.remove('fading');
+            dynTextEl.classList.remove('fading');
           });
         });
       }, FADE_MS);
@@ -1668,7 +1823,7 @@
         if (change > 0) { stateClass = 'positive'; arrowChar = '▲'; }
         else if (change < 0) { stateClass = 'negative'; arrowChar = '▼'; }
 
-        // Big mover badge
+        // Update percentage text
         const prevChange = pctEl.textContent;
         const hasChanged = prevChange !== percentText && prevChange !== '—';
 
@@ -1691,6 +1846,20 @@
           const arrow = card.querySelector('.rate-change-arrow');
           if (label) label.className = `rate-change-label ${stateClass}`;
           if (arrow) { arrow.className = `rate-change-arrow ${stateClass}`; arrow.textContent = arrowChar; }
+        }
+
+        // Big mover indicator
+        card.classList.remove('big-mover-up', 'big-mover-down');
+        const existingBadge = card.querySelector('.big-mover-badge');
+        if (existingBadge) existingBadge.remove();
+
+        if (Math.abs(change) >= BIG_MOVER_THRESHOLD) {
+          const isUp = change > 0;
+          card.classList.add(isUp ? 'big-mover-up' : 'big-mover-down');
+          const badge = document.createElement('span');
+          badge.className = `big-mover-badge ${isUp ? 'up' : 'down'}`;
+          badge.textContent = isUp ? '⬆ Aprovecha' : '⬇ Oportunidad';
+          card.appendChild(badge);
         }
       });
 
