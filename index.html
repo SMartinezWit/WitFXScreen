@@ -401,23 +401,52 @@
     .dynamic-chart-text {
       margin-top: 36px;
       text-align: center;
-      min-height: 110px;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      padding: 20px;
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, transparent 100%);
-      border: 1px solid rgba(34, 197, 94, 0.15);
-      border-radius: 16px;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.5s ease, border-color 0.5s ease;
+      padding: 24px;
+      border-radius: 20px;
       position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .dynamic-chart-text.positive {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.02) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+    }
+
+    .dynamic-chart-text.negative {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.02) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+
+    .dynamic-chart-text.neutral {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .dynamic-chart-text::after {
       content: '';
       position: absolute;
       inset: 0;
-      border-radius: 16px;
       pointer-events: none;
-      box-shadow: inset 0 0 20px rgba(34, 197, 94, 0.05);
       animation: dynTextPulse 3s infinite alternate;
+    }
+
+    .dynamic-chart-text.positive::after {
+      box-shadow: inset 0 0 30px rgba(34, 197, 94, 0.1);
+    }
+
+    .dynamic-chart-text.negative::after {
+      box-shadow: inset 0 0 30px rgba(239, 68, 68, 0.1);
+    }
+
+    .dynamic-chart-text.neutral::after {
+      box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.05);
     }
 
     @keyframes dynTextPulse {
@@ -437,22 +466,41 @@
 
     .dynamic-chart-text .line1 {
       display: block;
-      font-size: 48px;
+      font-size: 46px;
       font-weight: 800;
       color: var(--text-primary);
-      margin-bottom: 8px;
+      margin-bottom: 16px;
       letter-spacing: -0.5px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     }
 
     .dynamic-chart-text .accent {
-      display: block;
-      font-size: 38px;
-      font-weight: 600;
-      background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-light) 60%, #6EE7B7 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      display: inline-block;
+      font-size: 32px;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 16px;
       letter-spacing: -0.5px;
+    }
+
+    .dynamic-chart-text.positive .accent {
+      background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-light) 60%, #6EE7B7 100%);
+      color: #000;
+      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+    }
+
+    .dynamic-chart-text.negative .accent {
+      background: linear-gradient(135deg, var(--red-primary) 0%, var(--red-light) 60%, #FCA5A5 100%);
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+    }
+
+    .dynamic-chart-text.neutral .accent {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
     #historyChart {
@@ -1601,19 +1649,24 @@
         // Set dynamic text
         const change = weeklyChanges[currency.code] || 0;
         let msgs = [];
+        dynTextEl.classList.remove('positive', 'negative', 'neutral');
+        
         if (change > 0) {
+          dynTextEl.classList.add('positive');
           msgs = [
             { l1: `${currency.name} al alza.`, ac: `¿Un buen momento para vender?` },
             { l1: `El valor de ${currency.name} ha subido.`, ac: `Consulta tu cotización en ventanilla.` },
             { l1: `${currency.name} con tendencia positiva.`, ac: `Aprovecha el tipo de cambio de hoy.` }
           ];
         } else if (change < 0) {
+          dynTextEl.classList.add('negative');
           msgs = [
             { l1: `${currency.name} a la baja.`, ac: `¿Oportunidad para comprar?` },
             { l1: `${currency.name} muestra una bajada.`, ac: `Pregunta por el tipo de cambio actual.` },
             { l1: `El precio de ${currency.name} ha bajado.`, ac: `Un momento interesante para adquirir.` }
           ];
         } else {
+          dynTextEl.classList.add('neutral');
           msgs = [
             { l1: `${currency.name} se mantiene estable.`, ac: `Cotiza tus divisas sin compromiso.` }
           ];
