@@ -1289,7 +1289,7 @@
     // ============================================================
     //  CONFIGURATION
     // ============================================================
-    const BIG_MOVER_THRESHOLD = 1.5;  // ±1.5% weekly change triggers highlight
+    const BIG_MOVER_THRESHOLD = 2.5;  // ±1.5% weekly change triggers highlight
 
     // Weekly change data
     let weeklyChanges = {};  // { USD: 1.23, EUR: -0.45, ... } percentages
@@ -1650,7 +1650,7 @@
         const change = weeklyChanges[currency.code] || 0;
         let msgs = [];
         dynTextEl.classList.remove('positive', 'negative', 'neutral');
-        
+
         if (change > 0) {
           dynTextEl.classList.add('positive');
           msgs = [
@@ -1910,7 +1910,7 @@
           card.classList.add(isUp ? 'big-mover-up' : 'big-mover-down');
           const badge = document.createElement('span');
           badge.className = `big-mover-badge ${isUp ? 'up' : 'down'}`;
-          badge.textContent = isUp ? '⬆ Aprovecha' : '⬇ Oportunidad';
+          badge.textContent = isUp ? '⬆ Venta' : '⬇ Compra';
           card.appendChild(badge);
         }
       });
