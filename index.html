@@ -409,7 +409,8 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 28px;
-      max-width: 65%;
+      width: max-content;
+      max-width: 90%;
       padding: 52px 60px 52px 52px;
       border-radius: 24px;
       background: linear-gradient(120deg, rgba(5, 5, 5, 0.40) 0%, rgba(5, 5, 5, 0.08) 100%);
@@ -448,7 +449,7 @@
       border-radius: 50px;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      white-space: nowrap;
+      white-space: normal;
     }
 
     .dynamic-chart-text .accent-icon {
@@ -952,36 +953,13 @@
       box-shadow: inset 0 0 30px rgba(239, 68, 68, 0.04), 0 0 20px rgba(239, 68, 68, 0.06);
     }
 
-    /* Heartbeat for big mover percentages */
     .rate-card.big-mover-up .rate-percent,
     .rate-card.big-mover-down .rate-percent {
-      animation: heartbeat 2s ease-in-out infinite;
+      animation: badgeHeartbeat 2s ease-in-out infinite;
       display: inline-block;
     }
 
-    @keyframes heartbeat {
 
-      0%,
-      100% {
-        transform: scale(1);
-      }
-
-      15% {
-        transform: scale(1.07);
-      }
-
-      30% {
-        transform: scale(1);
-      }
-
-      45% {
-        transform: scale(1.07);
-      }
-
-      60% {
-        transform: scale(1);
-      }
-    }
 
     /* Rate flash animation */
     @keyframes rateFlash {
