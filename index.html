@@ -453,21 +453,21 @@
     }
 
     .dynamic-chart-text.positive .accent {
-      background: linear-gradient(135deg, #16a34a 0%, #4ade80 100%);
+      background: linear-gradient(135deg, var(--turquoise-dark) 0%, var(--turquoise-primary) 100%);
       color: #fff;
       box-shadow:
-        0 0 0 1px rgba(74, 222, 128, 0.35),
-        0 8px 32px rgba(34, 197, 94, 0.55),
+        0 0 0 1px rgba(94, 234, 212, 0.35),
+        0 8px 32px rgba(20, 184, 166, 0.55),
         0 2px 8px rgba(0, 0, 0, 0.4);
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     }
 
     .dynamic-chart-text.negative .accent {
-      background: linear-gradient(135deg, #15803d 0%, #22c55e 100%);
+      background: linear-gradient(135deg, var(--turquoise-dark) 0%, var(--turquoise-primary) 100%);
       color: #fff;
       box-shadow:
-        0 0 0 1px rgba(34, 197, 94, 0.35),
-        0 8px 32px rgba(22, 163, 74, 0.55),
+        0 0 0 1px rgba(20, 184, 166, 0.35),
+        0 8px 32px rgba(20, 184, 166, 0.55),
         0 2px 8px rgba(0, 0, 0, 0.4);
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     }
@@ -582,7 +582,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      padding: 270px 100px 0 60px;
+      padding: 258px 100px 0 60px;
       min-height: 0;
     }
 
@@ -596,7 +596,7 @@
     }
 
     .rates-title {
-      font-size: 38px;
+      font-size: 44px;
       font-weight: 700;
       letter-spacing: 5px;
       text-transform: uppercase;
@@ -618,7 +618,7 @@
     }
 
     .table-header span {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 6px;
@@ -1258,7 +1258,12 @@
       const scaleX = window.innerWidth / 3840;
       const scaleY = window.innerHeight / 2160;
       const scale = Math.min(scaleX, scaleY);
-      document.body.style.transform = `scale(${scale})`;
+      const scaledWidth = 3840 * scale;
+      const horizontalOffset = Math.max(0, (window.innerWidth - scaledWidth) / 2);
+
+      // Center the fixed 16:9 dashboard when the viewport is wider than it.
+      document.body.style.marginLeft = '0px';
+      document.body.style.transform = `matrix(${scale}, 0, 0, ${scale}, ${horizontalOffset}, 0)`;
     }
     window.addEventListener('resize', applyScale);
     applyScale();
