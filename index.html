@@ -26,11 +26,11 @@
       --bg-card: rgba(255, 255, 255, 0.035);
       --bg-card-alt: rgba(255, 255, 255, 0.02);
       --border-card: rgba(255, 255, 255, 0.07);
-      --border-card-glow: rgba(34, 197, 94, 0.2);
-      --green-primary: #22C55E;
-      --green-light: #4ADE80;
-      --green-dark: #166534;
-      --green-glow: rgba(34, 197, 94, 0.3);
+      --border-card-glow: rgba(20, 184, 166, 0.2);
+      --turquoise-primary: #14B8A6;
+      --turquoise-light: #5EEAD4;
+      --turquoise-dark: #0F766E;
+      --turquoise-glow: rgba(20, 184, 166, 0.3);
       --red-primary: #EF4444;
       --red-light: #F87171;
       --text-primary: #FFFFFF;
@@ -88,7 +88,7 @@
       height: 1000px;
       top: -200px;
       left: -200px;
-      background: rgba(34, 197, 94, 0.06);
+      background: rgba(20, 184, 166, 0.06);
     }
 
     .bg-orb-2 {
@@ -96,7 +96,7 @@
       height: 800px;
       bottom: -100px;
       right: 200px;
-      background: rgba(34, 197, 94, 0.04);
+      background: rgba(20, 184, 166, 0.04);
       animation-delay: -8s;
     }
 
@@ -105,7 +105,7 @@
       height: 600px;
       top: 40%;
       left: 35%;
-      background: rgba(34, 197, 94, 0.025);
+      background: rgba(20, 184, 166, 0.025);
       animation-delay: -15s;
     }
 
@@ -143,7 +143,7 @@
       position: absolute;
       font-family: var(--font-family);
       font-weight: 700;
-      color: rgba(34, 197, 94, 0.07);
+      color: rgba(20, 184, 166, 0.07);
       user-select: none;
       animation: symbolDrift linear infinite;
     }
@@ -182,7 +182,7 @@
     .particle {
       position: absolute;
       border-radius: 50%;
-      background: var(--green-primary);
+      background: var(--turquoise-primary);
       opacity: 0;
       animation: particleFloat linear infinite;
     }
@@ -253,15 +253,10 @@
       gap: 12px;
     }
 
-    .logo-wit,
-    .logo-fx {
-      font-size: 68px;
-      font-weight: 900;
-      letter-spacing: 8px;
-      line-height: 1;
-      padding: 14px 28px;
-      border: 3.5px solid var(--text-primary);
-      display: inline-block;
+    .brand-logo {
+      display: block;
+      width: 430px;
+      height: auto;
     }
 
     .logo-tagline {
@@ -296,7 +291,7 @@
 
     .headline h1 .accent {
       display: block;
-      background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-light) 60%, #6EE7B7 100%);
+      background: linear-gradient(135deg, var(--turquoise-primary) 0%, var(--turquoise-light) 60%, #99F6E4 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -527,8 +522,8 @@
     }
 
     .chart-dot.active {
-      background: var(--green-primary);
-      box-shadow: 0 0 10px var(--green-glow);
+      background: var(--turquoise-primary);
+      box-shadow: 0 0 10px var(--turquoise-glow);
       width: 28px;
       border-radius: 5px;
     }
@@ -576,73 +571,19 @@
 
     .date-display .day-name {
       font-weight: 600;
-      color: var(--green-primary);
+      color: var(--turquoise-primary);
       font-size: 24px;
       text-transform: uppercase;
       letter-spacing: 6px;
-    }
-
-    /* ===== LIVE INDICATOR ===== */
-    .live-indicator {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-size: 20px;
-      color: var(--text-muted);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-top: 10px;
-    }
-
-    .live-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--green-primary);
-      box-shadow: 0 0 16px var(--green-glow), 0 0 32px var(--green-glow);
-      animation: livePulse 2s ease-in-out infinite;
-    }
-
-    .live-dot.error {
-      background: var(--red-primary);
-      box-shadow: 0 0 16px rgba(239, 68, 68, 0.3), 0 0 32px rgba(239, 68, 68, 0.2);
-      animation: livePulseError 1.5s ease-in-out infinite;
-    }
-
-    @keyframes livePulse {
-
-      0%,
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-
-      50% {
-        transform: scale(1.4);
-        opacity: 0.6;
-      }
-    }
-
-    @keyframes livePulseError {
-
-      0%,
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-
-      50% {
-        transform: scale(1.2);
-        opacity: 0.7;
-      }
     }
 
     /* ===== RIGHT PANEL — RATES ===== */
     .right-panel {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 80px 100px 40px 60px;
+      justify-content: flex-start;
+      padding: 270px 100px 0 60px;
+      min-height: 0;
     }
 
     .rates-header {
@@ -695,12 +636,16 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+      flex: 1 1 auto;
+      min-height: 0;
     }
 
     .rate-card {
       display: grid;
       grid-template-columns: 1.2fr 1fr 1fr 1fr;
       align-items: center;
+      flex: 1 1 0;
+      min-height: 0;
       padding: 34px 40px;
       background: var(--bg-card);
       border: 1px solid var(--border-card);
@@ -728,7 +673,7 @@
     }
 
     .rate-card:nth-child(1)::before {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, transparent 40%);
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.05) 0%, transparent 40%);
       opacity: 1;
     }
 
@@ -820,7 +765,7 @@
     }
 
     .rate-percent.positive {
-      color: var(--green-primary);
+      color: var(--turquoise-primary);
     }
 
     .rate-percent.negative {
@@ -843,7 +788,7 @@
     }
 
     .rate-change-label.positive {
-      color: rgba(34, 197, 94, 0.5);
+      color: rgba(20, 184, 166, 0.5);
     }
 
     .rate-change-label.negative {
@@ -861,7 +806,7 @@
     }
 
     .rate-change-arrow.positive {
-      color: var(--green-primary);
+      color: var(--turquoise-primary);
     }
 
     .rate-change-arrow.negative {
@@ -936,15 +881,15 @@
     }
 
     .big-mover-badge.down {
-      color: var(--green-light);
-      background: rgba(34, 197, 94, 0.15);
-      border: 2px solid rgba(34, 197, 94, 0.4);
-      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
+      color: var(--turquoise-light);
+      background: rgba(20, 184, 166, 0.15);
+      border: 2px solid rgba(20, 184, 166, 0.4);
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.1);
     }
 
     .rate-card.big-mover-up {
-      border-color: rgba(34, 197, 94, 0.2);
-      box-shadow: inset 0 0 30px rgba(34, 197, 94, 0.04), 0 0 20px rgba(34, 197, 94, 0.06);
+      border-color: rgba(20, 184, 166, 0.2);
+      box-shadow: inset 0 0 30px rgba(20, 184, 166, 0.04), 0 0 20px rgba(20, 184, 166, 0.06);
     }
 
     .rate-card.big-mover-down {
@@ -969,7 +914,7 @@
 
       20% {
         border-color: var(--border-card-glow);
-        box-shadow: 0 0 40px rgba(34, 197, 94, 0.06), inset 0 0 40px rgba(34, 197, 94, 0.02);
+        box-shadow: 0 0 40px rgba(20, 184, 166, 0.06), inset 0 0 40px rgba(20, 184, 166, 0.02);
       }
 
       100% {
@@ -984,15 +929,16 @@
 
     /* ===== DISCLAIMER ===== */
     .disclaimer {
-      margin-top: 32px;
-      padding-top: 24px;
+      margin-top: 10px;
+      padding-top: 8px;
       border-top: 1px solid var(--border-card);
-      font-size: 22.3px;
+      font-size: 16px;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.25;
       display: flex;
       align-items: flex-start;
       gap: 10px;
+      white-space: nowrap;
     }
 
     .disclaimer-icon {
@@ -1008,7 +954,7 @@
       bottom: 60px;
       left: 50%;
       width: 1px;
-      background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.05) 15%, rgba(34, 197, 94, 0.12) 50%, rgba(255, 255, 255, 0.05) 85%, transparent 100%);
+      background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.05) 15%, rgba(20, 184, 166, 0.12) 50%, rgba(255, 255, 255, 0.05) 85%, transparent 100%);
       z-index: 1;
     }
 
@@ -1126,13 +1072,13 @@
     .corner-accent.top-left {
       top: 0;
       left: 0;
-      background: radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.04) 0%, transparent 70%);
+      background: radial-gradient(circle at 0% 0%, rgba(20, 184, 166, 0.04) 0%, transparent 70%);
     }
 
     .corner-accent.bottom-right {
       bottom: 0;
       right: 0;
-      background: radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.03) 0%, transparent 70%);
+      background: radial-gradient(circle at 100% 100%, rgba(20, 184, 166, 0.03) 0%, transparent 70%);
     }
 
     /* ===== DYNAMIC HEADLINE TRANSITIONS ===== */
@@ -1183,11 +1129,11 @@
 
       <!-- Top Header Row (Logo + Headline) -->
       <div class="left-panel-header">
-        <!-- Logo -->
+        <!-- Official Logo -->
         <div class="logo-section">
           <div class="logo">
-            <span class="logo-wit">WIT</span>
-            <span class="logo-fx">FX</span>
+            <img class="brand-logo" src="WIT FX Centro Cambiario - Original - Sin Fondo.png"
+              alt="WIT FX Centro Cambiario">
           </div>
         </div>
 
@@ -1248,7 +1194,7 @@
       </div>
     </div>
 
-    <!-- PAGE FOOTER: Clock, Date & Live Indicator -->
+    <!-- PAGE FOOTER: Clock & Date -->
     <div class="page-footer">
       <div class="datetime-container">
         <div class="clock" id="clock">
@@ -1258,10 +1204,6 @@
           <div class="day-name" id="day-name">—</div>
           <div id="date-full">—</div>
         </div>
-      </div>
-      <div class="live-indicator" id="live-indicator">
-        <div class="live-dot" id="live-dot"></div>
-        <span id="live-text">Conectando...</span>
       </div>
     </div>
   </div>
@@ -1509,7 +1451,6 @@
 
           isLoading = false;
           updateDisplay();
-          setLiveStatus(true, `Actualizado: ${new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}`);
           return;
         } catch (err) {
           console.warn(`Endpoint failed: ${base}`, err);
@@ -1517,7 +1458,6 @@
       }
 
       console.error('All API endpoints failed');
-      setLiveStatus(false, 'Error de conexión — reintentando...');
       setTimeout(fetchRates, 30000);
     }
 
@@ -1912,16 +1852,6 @@
 
       // Redraw sparklines with updated data
       drawAllSparklines();
-    }
-
-    // ============================================================
-    //  LIVE STATUS
-    // ============================================================
-    function setLiveStatus(isLive, text) {
-      const dot = document.getElementById('live-dot');
-      const label = document.getElementById('live-text');
-      dot.classList.toggle('error', !isLive);
-      label.textContent = text;
     }
 
     // ============================================================
