@@ -1236,9 +1236,12 @@
       'https://open.er-api.com/v6/latest',
     ];
 
-    // Frankfurter endpoints for historical chart data only
+    // Frankfurter endpoints for historical chart data only.
+    // NOTE: api.frankfurter.app 301-redirects here and the redirect carries no
+    // CORS headers, so the browser blocks it. Hit the .dev host directly --
+    // it serves Access-Control-Allow-Origin: * and needs no proxy.
     const HISTORICAL_API_ENDPOINTS = [
-      'https://api.frankfurter.app',
+      'https://api.frankfurter.dev/v1',
     ];
 
     // ============================================================
@@ -1499,8 +1502,7 @@
       for (const base of HISTORICAL_API_ENDPOINTS) {
         try {
           const apiUrl = `${base}/${startDate}..${endDate}?from=MXN&to=${codes}`;
-          const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
-          const response = await fetch(proxyUrl);
+          const response = await fetch(apiUrl);
           if (!response.ok) continue;
           const data = await response.json();
 
@@ -1528,6 +1530,9 @@
           console.warn(`Historical fetch failed: ${base}`, err);
         }
       }
+
+      console.error('All historical API endpoints failed');
+      setTimeout(fetchHistoricalData, 30000);
     }
 
     // ============================================================
